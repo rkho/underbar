@@ -37,7 +37,11 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-  };
+      //Set a variable to array.length
+      var number = array.length;
+      //Ternary operator to return the last index of the array if n is not defined. Otherwise, a second check to see if n > array.length. If so, return the original array. Otherwise, proceed as normal.
+      return n === undefined ? array[number - 1] : n > number ? array : array.slice((number - n), (number));
+    };
 
   // Call iterator(value, key, collection) for each element of collection.
   // Accepts both arrays and objects.
