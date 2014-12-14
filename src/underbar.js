@@ -101,6 +101,14 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    //Iterate over this array. I will try and use _.indexOf to find out if it already exists in our returned array. If it does, then we ignore it.
+    var result = [];
+    _.each(array, function(elem){
+      if (_.indexOf(result, elem) === -1){
+        result.push(elem);
+      }
+    });
+    return result;
   };
 
 
