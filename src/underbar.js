@@ -243,13 +243,29 @@
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj) {
-
+  _.extend = function(obj){
+    //Loop through the arguments array
+    _.each(arguments, function(elem){
+      //Each element in the arguments array is an object. Loop through each object.
+      _.each(elem, function(elem, key){
+        obj[key] = elem;
+      });
+    });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    _.each(arguments, function(elem){
+      _.each(elem, function(elem, key){
+        //Similar to extend, but checks to make sure that [key] does not exist in obj first.
+        if (!obj.hasOwnProperty(key)){
+          obj[key] = elem;
+        }
+      });
+    });
+    return obj;
   };
 
 
