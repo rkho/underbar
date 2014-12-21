@@ -119,9 +119,10 @@
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
     var result = [];
-    for (var i = 0; i < collection.length; i++){
-      result.push(iterator(collection[i]));
-    }
+    //I wanted to refactor _.map with _.each.
+    _.each(collection, function(elem){
+      result.push(iterator(elem));
+    });
     return result;
   };
 
@@ -163,8 +164,16 @@
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
-  _.reduce = function(collection, iterator, accumulator) {
 
+  _.reduce = function(collection, iterator, accumulator){
+    //Loop through the contents of collection.
+    _.each(collection, function(elem){
+      //For each element of this array, we'll check to see if the accumulator is defined or not. If it is not defined, we'll set it to the first element of the array.
+      //Otherwise, we'll set the accumulator to the result of passing in the current accumulator and current element into the iterator.
+      return accumulator === undefined ? accumulator = collection[0] : accumulator = iterator(accumulator, elem);
+    });
+
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -181,14 +190,38 @@
 
 
   // Determine whether all of the elements match a truth test.
-  _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
+  _.every = function(collection, iterator){
+    //First, set the iterator if it is not defined.
+    iterator = iterator || _.identity;
+
+    //Next, set a boolean variable for whether the test passes or not. Let's assume all tests pass by default.
+    var passed = true;
+
+    //Loop through the collection
+    _.each(collection, function(elem){
+      if(!iterator(elem)){
+        passed = false;
+      }
+    });
+
+    return passed;
   };
+
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
-    // TIP: There's a very clever way to re-use every() here.
+  _.some = function(collection, iterator){
+    iterator = iterator || _.identity;
+
+    var passed = false;
+
+    _.each(collection, function(elem){
+      if(iterator(elem)){
+        passed = true;
+      }
+    });
+
+    return passed;
   };
 
 
@@ -211,6 +244,7 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+
   };
 
   // Like extend, but doesn't ever overwrite a key that already
